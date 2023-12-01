@@ -298,7 +298,13 @@ def setup(numero_jogadores):
     random.shuffle(baralho_tesouros)
 #*******************************************************************************
 
-    larguras_colunas = [2, 4, 6, 6, 4, 2]
+    # Adicionando uma linha com 6 colunas abaixo do tabuleiro
+    tabuleiro.extend([
+        ["| Baralho Tesouro ".center(18), "| Baralho Alagamento", "  Descarte Tesouro  ".center(18) + "|",
+         "Descarte Alagamento", "Nível de Enchente=1".center(16), ""]
+    ])
+
+    larguras_colunas = [2, 4, 6, 6, 6, 6, 4, 2]
 
     while True:
         for linha in tabuleiro:
