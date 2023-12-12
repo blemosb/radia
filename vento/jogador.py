@@ -29,7 +29,7 @@ class Explorador(Jogador):
         pass
 
     def __repr__(self):
-        return "*****EXPLORADOR*****"
+        return "*****EXPLORADOR****🟢"
 
 class Mergulhador(Jogador):
     def __init__(self):
@@ -40,7 +40,7 @@ class Mergulhador(Jogador):
         pass
 
     def __repr__(self):
-        return "****MERGULHADOR*****"
+        return "****MERGULHADOR***⚫"
 
 class Navegador(Jogador):
     def __init__(self):
@@ -51,7 +51,7 @@ class Navegador(Jogador):
         pass
 
     def __repr__(self):
-        return "*****NAVEGADOR******"
+        return "*****NAVEGADOR*****🟡"
 
 class Piloto(Jogador):
     def __init__(self):
@@ -62,7 +62,7 @@ class Piloto(Jogador):
         pass
 
     def __repr__(self):
-        return "*******PILOTO*******"
+        return "*******PILOTO******🔵"
 
 class Engenheiro(Jogador):
     def __init__(self):
@@ -73,7 +73,7 @@ class Engenheiro(Jogador):
         pass
 
     def __repr__(self):
-        return "*****ENGENHEIRO*****"
+        return "*****ENGENHEIRO****🔴"
 
 class Mensageiro(Jogador):
     def __init__(self):
@@ -84,6 +84,6 @@ class Mensageiro(Jogador):
         pass
 
     def __repr__(self):
-        return "*****MENSAGEIRO*****"
+        return "*****MENSAGEIRO***◐"
 
 

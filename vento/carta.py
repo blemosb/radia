@@ -18,8 +18,8 @@ class CartaEnchente(Carta):
 
 class CartaHelicoptero(Carta):
     def __repr__(self):
-        return "  CARTA HELICOPTERO "
+        return " CARTA HELICOPTERO 🚁"
 
 class CartaSacoAreia(Carta):
     def __repr__(self):
-        return "CARTA SACO DE AREIA"
+        return "CARTA SACO DE AREIA💰"

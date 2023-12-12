@@ -27,28 +27,33 @@ Changelog
 import random
 from carta import CartaTesouro, CartaEnchente, CartaSacoAreia, CartaAlagamento, CartaHelicoptero
 from jogador import Explorador, Navegador, Piloto, Engenheiro, Mensageiro, Mergulhador
-
+from artefato import Artefato
 
 class Terreno:
     class PORTAO_COBRE:
-        nome = "  Portão de Cobre   "
+        nome = "🟢 Portão de Cobre   "
         visual = '\u2fa8C'
         contagem = 0
+        jogadores = ['explorador']
 
     class PISTA_POUSO:
-        nome = "   Pista de Pouso   "
+        nome = "   Pista de Pouso  🚁"
         visual = '\U0001f681 '
         contagem = 0
+        jogadores = ['piloto']
 
     class PORTAO_BRONZE:
-        nome = "  Portão de Bronze  "
+        nome = "🔴 Portão de Bronze🌊"
         visual = '\u2fa8 B'
         contagem = 0
+        tesouro = "TESOURO AGUA"
+        jogadores = ['engenheiro']
 
     class PALACIO_CORAL:
-        nome = "  Palácio de Coral  "
+        nome = "  Palácio de Coral🌊"
         visual = '\U0001f3f0 💧'
         contagem = 0
+        tesouro = "TESOURO AGUA"
 
     class VALE_TENEBROSO:
         nome = "   Vale Tenebroso   "
@@ -59,16 +64,19 @@ class Terreno:
         nome = "   Portão de Ouro   "
         visual = '\u2fa8 O'
         contagem = 0
+        jogadores = ['navegador']
 
     class PORTAO_PRATA:
-        nome = "   Portão de Prata  "
+        nome = "◐  Portão de Prata  "
         visual = '\u2fa8 P'
         contagem = 0
+        jogadores = ['mensageiro']
 
     class PORTAO_FERRO:
-        nome = "  Portão de Ferro   "
+        nome = "⚫ Portão de Ferro   "
         visual = '\u2fa8 F'
         contagem = 0
+        jogadores = ['mergulhador']
 
     class ATALAIA:
         nome = "       Atalaia      "
@@ -76,34 +84,40 @@ class Terreno:
         contagem = 0
 
     class JARDIM_SUSSUROS:
-        nome = "Jardim dos Sussurros"
+        nome = "Jardim dos Sussurros🍃"
         visual = '\u2698 '
         contagem = 0
+        tesouro = "TESOURO VENTO"
 
     class JARDIM_UIVOS:
-        nome = "  Jardim dos Uivos  "
+        nome = "  Jardim dos Uivos🍃"
         visual = '\u2698 \U0001f43a'
         contagem = 0
+        tesouro = "TESOURO VENTO"
 
     class TEMPLO_SOL:
-        nome = "    Templo do Sol   "
+        nome = "    Templo do Sol 🌎"
         visual = "\uf90a \u263c"
         contagem = 0
+        tesouro = "TESOURO TERRA"
 
     class TEMPLO_LUA:
-        nome = "    Templo da Lua   "
+        nome = "   Templo da Lua  🌎"
         visual = "\uf90a \u263e"
         contagem = 0
+        tesouro = "TESOURO TERRA"
 
     class CAVERNA_LAVA:
-        nome = "   Caverna de Lava  "
+        nome = "   Caverna de Lava 🔥"
         visual = '🏔 ️ \U0001f525'
         contagem = 0
+        tesouro = "TESOURO FOGO"
 
     class CAVERNA_SOMBRAS:
-        nome = "Caverna das Sombras "
+        nome = "Caverna das Sombras🔥"
         visual = "🏔 ️ 🏔 ️"
         contagem = 0
+        tesouro = "TESOURO FOGO"
 
     class OBSERVATORIO:
         nome = "    Observatório    "
@@ -151,8 +165,25 @@ class Terreno:
         contagem = 0
 
 
+def criar_artefatos():
+    lista_de_artefatos = []
+
+    # Criando os objetos da classe Artefato e adicionando à lista
+    artefato1 = Artefato("   TESOURO FOGO  🔥", "")
+    artefato2 = Artefato("   TESOURO ÁGUA  🌊", "")
+    artefato3 = Artefato("   TESOURO VENTO  🍃", "")
+    artefato4 = Artefato("   TESOURO TERRA  🌎", "")
+
+    lista_de_artefatos.append(artefato1)
+    lista_de_artefatos.append(artefato2)
+    lista_de_artefatos.append(artefato3)
+    lista_de_artefatos.append(artefato4)
+
+    return lista_de_artefatos
+
+
 def setup(numero_jogadores):
-    tabuleiro = [
+    ilha = [
         ["                    ", "                    ", "", "", "                    ", "                    "],
         ["                    ", "", "", "", "", "                    "],
         ["", "", "", "", "", ""],
@@ -168,7 +199,8 @@ def setup(numero_jogadores):
     terrenos_oceano = []
 
     jogador = ['explorador', 'mergulhador', 'piloto', 'navegador', 'engenheiro', 'mensageiro']
-    tesouros = ["    TESOURO FOGO    ", "    TESOURO ÁGUA    ", "    TESOURO VENTO   ", "    TESOURO TERRA   "]
+    tesouros = criar_artefatos()
+    # tesouros = ["    TESOURO FOGO    ", "    TESOURO ÁGUA    ", "    TESOURO VENTO   ", "    TESOURO TERRA   "]
     baralho_alagamento = []
     baralho_tesouros = []
     baralho_descarte_tesouro = []
@@ -185,52 +217,52 @@ def setup(numero_jogadores):
            Terreno.PALACIO_MARES.nome, Terreno.PENEDO_BALDIO.nome, Terreno.BOSQUE_CARMESIM.nome,
            Terreno.DUNAS_ENGANO.nome, Terreno.PONTE_SUSPENSA.nome, Terreno.LAGOA_PERDIDA.nome]
 
-    # Adicionando terrenos aleatóriamente ao tabuleiro
+    # Adicionando terrenos aleatóriamente na ilha
 
     incluir_terrenos = ter.copy()
-    for linha in range(len(tabuleiro)):
-        for coluna in range(len(tabuleiro[linha])):
-            if tabuleiro[linha][coluna] == "":
+    for linha in range(len(ilha)):
+        for coluna in range(len(ilha[linha])):
+            if ilha[linha][coluna] == "":
                 elemento = random.choice(incluir_terrenos)
-                tabuleiro[linha][coluna] = elemento
+                ilha[linha][coluna] = elemento
                 incluir_terrenos.remove(elemento)
     # **********************************************************************************
 
     lista_tesouros = tesouros.copy()
-    # acrescentando aleatoriamente os tesouro nas extremidades do tabuleiro
+    # acrescentando aleatoriamente os tesouros nas extremidades do ilha
     tesouro = random.choice(lista_tesouros)
-    tabuleiro[0][0] = tesouro
+    ilha[0][0] = tesouro.nome
     lista_tesouros.remove(tesouro)
 
     tesouro = random.choice(lista_tesouros)
-    tabuleiro[0][5] = tesouro
+    ilha[0][5] = tesouro.nome
     lista_tesouros.remove(tesouro)
 
     tesouro = random.choice(lista_tesouros)
-    tabuleiro[5][0] = tesouro
+    ilha[5][0] = tesouro.nome
     lista_tesouros.remove(tesouro)
 
     tesouro = random.choice(lista_tesouros)
-    tabuleiro[5][5] = tesouro
+    ilha[5][5] = tesouro.nome
     lista_tesouros.remove(tesouro)
 
     # **************************************************************************************************
 
-    # Acrescentando as mãos dos jogdores no tabuleiro
+    # Acrescentando as mãos dos jogdores no ilha
     nomes_jogadores = ["Mão de Jogador 1", "Mão de Jogador 2", "Mão de Jogador 3", "Mão de Jogador 4"]
     for nome in nomes_jogadores:
         nova_linha = ["|" + " " * 18 + "|"]
         for _ in range(5):
             nova_linha.append("|" + " " * 18 + "|")
-        tabuleiro.append(nova_linha)
+        ilha.append(nova_linha)
 
-    for i, nome in enumerate(nomes_jogadores, start=len(tabuleiro) - 4):
-        tabuleiro[i][0] = "|" + nome.center(18) + "|"
+    for i, nome in enumerate(nomes_jogadores, start=len(ilha) - 4):
+        ilha[i][0] = "|" + nome.center(18) + "|"
 
         # **********************************************************************************************
 
         # acrescentar baralho de alagamento
-        cartas_alagamento = ter.copy()
+    cartas_alagamento = ter.copy()
     for i in range(len(ter)):
         elemento = random.choice(cartas_alagamento)
         baralho_alagamento.append(elemento)
@@ -240,7 +272,7 @@ def setup(numero_jogadores):
         # acrescentar baralho de tesouros
     for tesouro in tesouros:
         for _ in range(5):
-            baralho_tesouros.append(CartaTesouro(tesouro))
+            baralho_tesouros.append(CartaTesouro(tesouro.nome))
         # ******************************************************************************
 
         # acrescentar 3 fugas de helicoptero no baralho de tesouro
@@ -284,8 +316,8 @@ def setup(numero_jogadores):
             # compra carta do baralho de tesouros
             carta_tesouro = baralho_tesouros.pop()
             jogador.comprar_carta(carta_tesouro)
-            tabuleiro[linha][coluna] = str(carta_tesouro)
-            tabuleiro[linha][0] = jogador.__repr__()
+            ilha[linha][coluna] = str(carta_tesouro)
+            ilha[linha][0] = jogador.__repr__()
             coluna += 1
             #************************************************************************
 
@@ -298,16 +330,16 @@ def setup(numero_jogadores):
     random.shuffle(baralho_tesouros)
 #*******************************************************************************
 
-    # Adicionando uma linha com 6 colunas abaixo do tabuleiro
-    tabuleiro.extend([
-        ["| Baralho Tesouro ".center(18), "| Baralho Alagamento", "  Descarte Tesouro  ".center(18) + "|",
-         "Descarte Alagamento", "Nível de Enchente=1".center(16), ""]
+    # Adicionando uma linha com 6 colunas abaixo do ilha
+    ilha.extend([
+        ["|Baralho Tesouro" + str(len(baralho_tesouros)).center(5), "| Baralho Alagamento " + str(len(baralho_alagamento)).center(1) + " ", "  Descarte Tesouro"+ str(len(baralho_descarte_tesouro)).center(5),
+         "  Descarte Alagamento " + str(len(baralho_descarte_alagamento)) + "  ", " Nível de Enchente = 1".center(16) + " "]
     ])
 
     larguras_colunas = [2, 4, 6, 6, 6, 6, 4, 2]
 
     while True:
-        for linha in tabuleiro:
+        for linha in ilha:
             linha_formatada = [("|" + celula + " " * (20 - len(celula)) + "|") for celula in linha]
 
             linha_para_imprimir = ""
